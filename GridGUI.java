@@ -11,7 +11,7 @@ public class GridGUI {
 
         frame = new JFrame("PathFinding Visualiser");
 
-        gridPanel = new JPanel(new GridLayout(3,3));
+        gridPanel = new JPanel(new GridLayout(gridN, gridN));
 
         cellArray = new JButton[gridN][gridN];
 
