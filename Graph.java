@@ -2,11 +2,17 @@ public class Graph {
     private int gridN;
     private int nodes;
     private int[][] adjMatrix;
+    private int startCell;
+    private int destinationCell;  
 
     public Graph (int gridN){
         this.gridN = gridN;
         nodes = gridN * gridN;
         adjMatrix  = new int[nodes][nodes];
+
+        startCell = gridN * ((int) Math.ceil(gridN/2));
+        destinationCell = (gridN * ((int) Math.ceil(gridN/2))) + (gridN - 1);
+
         initialiseMatrix();
     }
 
@@ -92,7 +98,4 @@ public class Graph {
     public int getGridN(){
         return gridN;
     }
-
-
-    //need to account for start and end destination 
 }

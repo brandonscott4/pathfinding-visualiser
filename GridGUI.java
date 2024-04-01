@@ -29,6 +29,7 @@ public class GridGUI {
         
         frame.add(gridPanel);
         frame.pack();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
 
     }
@@ -46,4 +47,13 @@ public class GridGUI {
             return true;
         }
     }
+
+    public void setStartDestination(int[] start, int[] destination){
+        cellArray[start[0]][start[1]].setBackground(Color.BLUE);
+        cellArray[start[0]][start[1]].setEnabled(false);
+
+        cellArray[destination[0]][destination[1]].setBackground(Color.GREEN);
+        cellArray[destination[0]][destination[1]].setEnabled(false);
+    }
+
 }
