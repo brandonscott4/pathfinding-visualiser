@@ -1,15 +1,16 @@
 public class Graph {
-    private int[][] adjMatrix;
     private int gridN;
     private int nodes;
+    private int[][] adjMatrix;
 
     public Graph (int gridN){
         this.gridN = gridN;
         nodes = gridN * gridN;
-        adjMatrix = new int[nodes][nodes];
+        adjMatrix  = new int[nodes][nodes];
+        initialiseMatrix();
     }
 
-    public void initialiseMatrix(){
+    private void initialiseMatrix(){
         int adjIndex = 0;
         for(int i=0; i<gridN; i++){
             for(int j=0; j<gridN; j++){
@@ -41,12 +42,15 @@ public class Graph {
     }
 
     private void printAdjMatrix(){
+        System.out.println();
         for(int i=0; i<nodes; i++){
             System.out.println("");
             for(int j=0; j<nodes; j++){
                 System.out.print("-" + adjMatrix[i][j] + "-");
             }
         }
+        
+        System.out.println();
     }
 
     public void modifyEdges(int i, int j, boolean removeEdges){
@@ -85,14 +89,10 @@ public class Graph {
         printAdjMatrix();
     }
 
+    public int getGridN(){
+        return gridN;
+    }
+
 
     //need to account for start and end destination 
-
-    public static void main(String[] args) {
-        Graph g = new Graph(3);
-        g.initialiseMatrix();
-        System.out.println();
-        g.modifyEdges(1, 0, true);
-
-    }
 }
