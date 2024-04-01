@@ -27,5 +27,11 @@ public class Controller {
 
         int gridMiddleRowIndex = (int) Math.ceil(gridN / 2);
         this.gui.setStartDestination(new int[] {gridMiddleRowIndex, 0}, new int[] {gridMiddleRowIndex, gridN-1});
+
+        this.gui.addStartActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                graph.dfs();
+            }
+        });
     }
 }

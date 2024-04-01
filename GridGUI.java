@@ -4,8 +4,11 @@ import java.awt.event.ActionListener;
 
 public class GridGUI {
     private JFrame frame;
+    private JPanel container;
     private JPanel gridPanel;
+    private JPanel controlPanel;
     private JButton[][] cellArray;
+    private JButton start;
 
     public GridGUI(int gridN){
 
@@ -26,8 +29,17 @@ public class GridGUI {
                 gridPanel.add(cellArray[indexI][indexJ]);
             }
         }
+        container = new JPanel();
+        container.setLayout(new BoxLayout(container, BoxLayout.X_AXIS));
+
+        controlPanel = new JPanel();
+        start = new JButton("Start");
+        controlPanel.add(start);
         
-        frame.add(gridPanel);
+        container.add(gridPanel);
+        container.add(controlPanel);
+
+        frame.add(container);
         frame.pack();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
@@ -36,6 +48,10 @@ public class GridGUI {
 
     public void addCellActionListener(ActionListener listener, int i, int j){
         cellArray[i][j].addActionListener(listener);
+    }
+
+    public void addStartActionListener(ActionListener listener){
+        start.addActionListener(listener);
     }
 
     public boolean setBlockCell(int i, int j){
