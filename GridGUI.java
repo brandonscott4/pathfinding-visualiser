@@ -72,4 +72,17 @@ public class GridGUI {
         cellArray[destination[0]][destination[1]].setEnabled(false);
     }
 
+    public void setVisitedCell(int i, int j){
+        cellArray[i][j].setBackground(Color.RED);
+    }
+
+    public void clearGrid(){
+        for(int i=0; i<cellArray.length; i++){
+            for(int j=0; j<cellArray.length; j++){
+                if(cellArray[i][j].getBackground() == Color.RED){
+                    cellArray[i][j].setBackground(null);
+                }
+            }
+        }
+    }
 }

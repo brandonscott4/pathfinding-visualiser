@@ -1,5 +1,3 @@
-import java.util.Stack;
-
 public class Graph {
     private int gridN;
     private int nodes;
@@ -101,36 +99,19 @@ public class Graph {
         return gridN;
     }
 
-    public boolean dfs(){
-        Stack<Integer> stack = new Stack<>();
-        boolean[] visited = new boolean[nodes];
+    public int getNodes(){
+        return nodes;
+    }
 
-        int currentCell = startCell;
-        visited[currentCell] = true;
+    public int[][] getAdjacencyMatrix(){
+        return adjMatrix;
+    }
 
-        for(int i=0; i<nodes; i++){
-            if(visited[i] == false && adjMatrix[currentCell][i] == 1){
-                stack.push(i);
-            }
-        }
+    public int getStartCell(){
+        return startCell;
+    }
 
-        while(!stack.isEmpty()){
-            if(stack.peek() == destinationCell){
-                System.out.println("found");
-                return true;
-            }
-
-            currentCell = stack.pop();
-            visited[currentCell] = true;
-
-            for(int i=0; i<nodes; i++){
-                if(visited[i] == false && adjMatrix[currentCell][i] == 1){
-                    stack.push(i);
-                }
-            }
-        }
-
-        System.out.println("not found");
-        return false;
+    public int getDestinationCell(){
+        return destinationCell;
     }
 }

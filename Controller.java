@@ -1,5 +1,9 @@
+import java.util.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Stack;
+
+import javax.swing.SwingWorker;
 
 public class Controller {
     private GridGUI gui;
@@ -19,7 +23,7 @@ public class Controller {
                     public void actionPerformed(ActionEvent e) {
                         boolean isBlock = gui.setBlockCell(row, col);
                         graph.modifyEdges(row, col, isBlock);
-                        System.out.println(row + ", " + col);
+                        //System.out.println(row + ", " + col);
                     }
                 }, row, col);
             }
@@ -30,8 +34,61 @@ public class Controller {
 
         this.gui.addStartActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                graph.dfs();
+                gui.clearGrid();
+                SwingWorker<Boolean, Integer> pathFindingWorker = createPathFindingWorker();
+                pathFindingWorker.execute();
             }
         });
     }
-}
+
+    public SwingWorker<Boolean, Integer> createPathFindingWorker(){
+        return new SwingWorker<Boolean, Integer>() {
+            @Override
+            protected Boolean doInBackground() throws InterruptedException{
+                int nodes = graph.getNodes();
+
+                Stack<Integer> stack = new Stack<>();
+                boolean[] visited = new boolean[nodes];
+
+                int currentCell = graph.getStartCell();
+                visited[currentCell] = true;
+
+                for(int i=0; i<nodes; i++){
+                    if(visited[i] == false && graph.getAdjacencyMatrix()[currentCell][i] == 1){
+                        stack.push(i);
+                    }
+                }
+
+                while(!stack.isEmpty()){
+                    if(stack.peek() == graph.getDestinationCell()){
+                        System.out.println("found");
+                        return true;
+                    }
+
+                    currentCell = stack.pop();
+                    visited[currentCell] = true;
+                    publish(currentCell);
+
+                    for(int i=0; i<nodes; i++){
+                        if(visited[i] == false && graph.getAdjacencyMatrix()[currentCell][i] == 1){
+                            stack.push(i);
+                        }
+                    }
+
+                    Thread.sleep(50);
+                }
+
+                System.out.println("not found");
+                return false;
+            }
+
+            @Override
+            protected void process(List<Integer> chunks ){
+                for(int visitedCell : chunks){
+                    gui.setVisitedCell(visitedCell / graph.getGridN(), visitedCell % graph.getGridN());
+                }
+            }
+        };
+    } 
+
+    }
