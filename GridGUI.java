@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.util.Stack;
 
 public class GridGUI {
     private JFrame frame;
@@ -79,10 +80,20 @@ public class GridGUI {
     public void clearGrid(){
         for(int i=0; i<cellArray.length; i++){
             for(int j=0; j<cellArray.length; j++){
-                if(cellArray[i][j].getBackground() == Color.RED){
+                if(cellArray[i][j].getBackground() == Color.RED || cellArray[i][j].getBackground() == Color.YELLOW){
                     cellArray[i][j].setBackground(null);
                 }
             }
+        }
+    }
+
+    public void setValidPath(Stack<Integer> validPath, int gridN) throws InterruptedException{
+        //need to not paint start and end destination
+        validPath.pop();
+        while(validPath.size() != 1){
+            int cell = validPath.pop();
+            cellArray[cell / gridN][cell % gridN].setBackground(Color.YELLOW);
+            Thread.sleep(50);
         }
     }
 }
