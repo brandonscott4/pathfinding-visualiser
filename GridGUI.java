@@ -32,7 +32,7 @@ public class GridGUI {
                 gridPanel.add(cellArray[indexI][indexJ]);
             }
         }
-        
+
         container = new JPanel();
         container.setLayout(new BoxLayout(container, BoxLayout.X_AXIS));
 
@@ -88,6 +88,8 @@ public class GridGUI {
     }
 
     private void setVisitedCell(int i, int j){
+        //a lot of trues being printed here... seems to be an issue
+        //System.out.println(cellArray[i][j].getBackground() == Color.RED);
         cellArray[i][j].setBackground(Color.RED);
     }
 
@@ -117,7 +119,14 @@ public class GridGUI {
 
     public void update(int i, int j){
         //Update view with new data
-        setVisitedCell(i, j);
+
+        //Ensures updates get ran on the EDT
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                setVisitedCell(i, j);
+            }
+        });
     }
 
     public void update(Stack<Integer> validPath, int gridN) throws InterruptedException{

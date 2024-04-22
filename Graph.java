@@ -200,17 +200,18 @@ public class Graph {
         HashMap<Integer, Integer> parentMap = new HashMap<>(); 
 
         Queue<Integer> queue = new LinkedList<Integer>();
-        boolean[] explored = new boolean[nodes];
+        boolean[] visited = new boolean[nodes];
 
         //add start node to be explored queue
         int currentCell = startCell;
-        explored[currentCell] = true;
+        visited[currentCell] = true;
 
         //visit all of the start nodes adjacent nodes
         for(int i=0; i<nodes; i++){
-            if(explored[i] == false && adjMatrix[currentCell][i] == 1){
+            if(visited[i] == false && adjMatrix[currentCell][i] == 1){
                 queue.add(i);
                 parentMap.put(i, currentCell);
+                visited[i] = true;
             }
         }
 
@@ -231,13 +232,14 @@ public class Graph {
             }
 
             notifyObserver(currentCell);
-            Thread.sleep(5);
+            Thread.sleep(50);
 
-            explored[currentCell] = true;
+            visited[currentCell] = true;
 
             //explore the current cells neighbours
             for(int i=0; i<nodes; i++){
-                if(explored[i] == false && adjMatrix[currentCell][i] == 1){
+                if(visited[i] == false && adjMatrix[currentCell][i] == 1){
+                    visited[i] = true;
                     queue.add(i);
                     parentMap.put(i, currentCell);
                 }
