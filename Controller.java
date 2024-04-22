@@ -33,10 +33,9 @@ public class Controller {
         this.gui.addStartActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 //disable grid?
-                gui.setStartEnabled(false);
+                gui.setGUIEnabled(false);
                 gui.clearGrid();
 
-                //NOTE: eventually could read input from dropdown to determine which pathfinding algo/worker to run
                 String algo = gui.getAlgo();
             
                 Thread dfsThread = new Thread(new Runnable() {
@@ -55,7 +54,7 @@ public class Controller {
                             e1.printStackTrace();
                         } finally {
                             //enable grid?
-                            gui.setStartEnabled(true);
+                            gui.setGUIEnabled(true);
                         }
                     }
                 });

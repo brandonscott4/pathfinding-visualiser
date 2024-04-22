@@ -12,10 +12,13 @@ public class GridGUI {
     private JButton[][] cellArray;
     private JButton start;
     private JComboBox<String> selectAlgo;
+    private int gridN;
 
     public GridGUI(int gridN){
 
         frame = new JFrame("PathFinding Visualiser");
+
+        this.gridN = gridN;
 
         gridPanel = new JPanel(new GridLayout(gridN, gridN));
 
@@ -133,8 +136,15 @@ public class GridGUI {
         setValidPath(validPath, gridN);
     }
 
-    public void setStartEnabled(boolean enabled){
+    public void setGUIEnabled(boolean enabled){
         start.setEnabled(enabled);
+        selectAlgo.setEnabled(enabled);
+        
+        for(int i=0; i<gridN; i++){
+            for(int j=0; j<gridN; j++){
+                cellArray[i][j].setEnabled(enabled);
+            }
+        }
     }
 
     //probably shouldnt be here
