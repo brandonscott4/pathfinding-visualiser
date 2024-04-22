@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.Stack;
 
+//Observer
 public class GridGUI {
     private JFrame frame;
     private JPanel container;
@@ -73,7 +74,7 @@ public class GridGUI {
         cellArray[destination[0]][destination[1]].setEnabled(false);
     }
 
-    public void setVisitedCell(int i, int j){
+    private void setVisitedCell(int i, int j){
         cellArray[i][j].setBackground(Color.RED);
     }
 
@@ -87,7 +88,7 @@ public class GridGUI {
         }
     }
 
-    public void setValidPath(Stack<Integer> validPath, int gridN) throws InterruptedException{
+    private void setValidPath(Stack<Integer> validPath, int gridN) throws InterruptedException{
         //need to not paint start and end destination
         validPath.pop();
         while(validPath.size() != 1){
@@ -95,5 +96,22 @@ public class GridGUI {
             cellArray[cell / gridN][cell % gridN].setBackground(Color.YELLOW);
             Thread.sleep(50);
         }
+    }
+
+    public void update(){
+        clearGrid();
+    }
+
+    public void update(int i, int j){
+        //Update view with new data
+        setVisitedCell(i, j);
+    }
+
+    public void update(Stack<Integer> validPath, int gridN) throws InterruptedException{
+        setValidPath(validPath, gridN);
+    }
+
+    public void setStartEnabled(boolean enabled){
+        start.setEnabled(enabled);
     }
 }

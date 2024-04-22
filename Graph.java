@@ -1,9 +1,15 @@
+import java.util.HashMap;
+import java.util.Stack;
+
+//Subject
 public class Graph {
     private int gridN;
     private int nodes;
     private int[][] adjMatrix;
     private int startCell;
     private int destinationCell;  
+    
+    private GridGUI view;
 
     public Graph (int gridN){
         this.gridN = gridN;
@@ -113,5 +119,77 @@ public class Graph {
 
     public int getDestinationCell(){
         return destinationCell;
+    }
+
+    public void addObserver(GridGUI view){
+        this.view = view;
+    }
+
+    public void notifyObserver(){
+        if(view != null){
+            view.update();
+        }
+    }
+    
+    public void notifyObserver(int visitedCell){
+        if(view != null){
+            view.update(visitedCell / gridN, visitedCell % gridN);
+        }
+    }
+
+    public void notifyObserver(Stack<Integer> validPath, int gridN) throws InterruptedException{
+        if(view != null){
+            view.update(validPath, gridN);
+        }
+    }
+
+    //look into InterruptedException being necessary due to thread sleep
+    public boolean dfs() throws InterruptedException{
+        Stack<Integer> validPath = new Stack<>();
+                HashMap<Integer, Integer> parentMap = new HashMap<>(); 
+
+                Stack<Integer> stack = new Stack<>();
+                boolean[] visited = new boolean[nodes];
+
+                int currentCell = startCell;
+                visited[currentCell] = true;
+
+                for(int i=0; i<nodes; i++){
+                    if(visited[i] == false && adjMatrix[currentCell][i] == 1){
+                        stack.push(i);
+                        parentMap.put(i, currentCell);
+                    }
+                }
+
+                while(!stack.isEmpty()){
+                    if(stack.peek() == destinationCell){
+                        System.out.println("found");
+                        Integer curr = stack.pop();
+
+                        while(curr != null){
+                            validPath.push(curr);
+                            curr = parentMap.get(curr);
+                        }
+                        notifyObserver();
+                        notifyObserver(validPath, gridN);
+                        return true;
+                    }
+
+                    currentCell = stack.pop();
+                    visited[currentCell] = true;
+                    notifyObserver(currentCell);
+
+                    for(int i=0; i<nodes; i++){
+                        if(visited[i] == false && adjMatrix[currentCell][i] == 1){
+                            stack.push(i);
+                            parentMap.put(i, currentCell);
+                        }
+                    }
+
+                    Thread.sleep(50);
+                }
+
+                System.out.println("Not found");
+                return false;
     }
 }
