@@ -1,5 +1,7 @@
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Stack;
+import java.util.Queue;
 
 //Subject
 public class Graph {
@@ -192,4 +194,59 @@ public class Graph {
                 System.out.println("Not found");
                 return false;
     }
+
+    public boolean bfs() throws InterruptedException {
+        Stack<Integer> validPath = new Stack<>();
+        HashMap<Integer, Integer> parentMap = new HashMap<>(); 
+
+        Queue<Integer> queue = new LinkedList<Integer>();
+        boolean[] explored = new boolean[nodes];
+
+        //add start node to be explored queue
+        int currentCell = startCell;
+        explored[currentCell] = true;
+
+        //visit all of the start nodes adjacent nodes
+        for(int i=0; i<nodes; i++){
+            if(explored[i] == false && adjMatrix[currentCell][i] == 1){
+                queue.add(i);
+                parentMap.put(i, currentCell);
+            }
+        }
+
+        while(!queue.isEmpty()){
+            currentCell = queue.remove();
+
+            //check for destination cell
+            if(currentCell == destinationCell){
+                Integer curr = currentCell;
+                System.out.println("Reached destination");
+                while(curr != null){
+                    validPath.push(curr);
+                    curr = parentMap.get(curr);
+                }
+                notifyObserver();
+                notifyObserver(validPath, gridN);
+                return true;
+            }
+
+            notifyObserver(currentCell);
+            Thread.sleep(5);
+
+            explored[currentCell] = true;
+
+            //explore the current cells neighbours
+            for(int i=0; i<nodes; i++){
+                if(explored[i] == false && adjMatrix[currentCell][i] == 1){
+                    queue.add(i);
+                    parentMap.put(i, currentCell);
+                }
+            }
+
+        }
+
+        System.out.println("Not found");
+        return false;
+    }
+
 }

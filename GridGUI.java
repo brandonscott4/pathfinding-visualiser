@@ -11,6 +11,7 @@ public class GridGUI {
     private JPanel controlPanel;
     private JButton[][] cellArray;
     private JButton start;
+    private JComboBox<String> selectAlgo;
 
     public GridGUI(int gridN){
 
@@ -31,19 +32,31 @@ public class GridGUI {
                 gridPanel.add(cellArray[indexI][indexJ]);
             }
         }
+        
         container = new JPanel();
         container.setLayout(new BoxLayout(container, BoxLayout.X_AXIS));
 
         controlPanel = new JPanel();
+        controlPanel.setLayout(new BoxLayout(controlPanel, BoxLayout.Y_AXIS));
         start = new JButton("Start");
+        selectAlgo = new JComboBox<>(new String[] {"BFS" ,"DFS"});
+        selectAlgo.setMaximumSize(new Dimension(150, 30));
+
+        start.setAlignmentX(Component.LEFT_ALIGNMENT);
+        selectAlgo.setAlignmentX(Component.LEFT_ALIGNMENT);
+
         controlPanel.add(start);
-        
+        controlPanel.add(Box.createVerticalStrut(25));
+        controlPanel.add(selectAlgo);
+        controlPanel.add(Box.createVerticalGlue());
+
         container.add(gridPanel);
         container.add(controlPanel);
 
         frame.add(container);
         frame.pack();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
     }
@@ -113,5 +126,10 @@ public class GridGUI {
 
     public void setStartEnabled(boolean enabled){
         start.setEnabled(enabled);
+    }
+
+    //probably shouldnt be here
+    public String getAlgo(){
+        return (String) selectAlgo.getSelectedItem();
     }
 }

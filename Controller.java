@@ -37,11 +37,19 @@ public class Controller {
                 gui.clearGrid();
 
                 //NOTE: eventually could read input from dropdown to determine which pathfinding algo/worker to run
-
+                String algo = gui.getAlgo();
+            
                 Thread dfsThread = new Thread(new Runnable() {
                     public void run() {
                         try {
-                            graph.dfs();
+                            switch (algo) {
+                                case "DFS":
+                                    graph.dfs();
+                                    break;
+                                case "BFS":
+                                    graph.bfs();
+                                    break;
+                            }
                         } catch (InterruptedException e1) {
                             // TODO Auto-generated catch block
                             e1.printStackTrace();
