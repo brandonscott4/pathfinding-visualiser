@@ -4,14 +4,14 @@ import java.awt.event.ActionListener;
 //maybe utilise abstract class or interface for pathfinding algos
 public class Controller {
     private GridGUI gui;
-    private Graph graph;
+    private Model model;
 
-    public Controller(GridGUI gui, Graph graph){
-        this.graph = graph;
+    public Controller(GridGUI gui, Model model){
+        this.model = model;
         this.gui = gui;
-        this.graph.addObserver(this.gui);
+        this.model.addObserver(this.gui);
 
-        int gridN = graph.getGridN();
+        int gridN = model.getGraph().getGridN();
 
         for(int i=0; i<gridN; i++){
             for(int j=0; j<gridN; j++){
@@ -20,7 +20,7 @@ public class Controller {
                 this.gui.addCellActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         boolean isBlock = gui.setBlockCell(row, col);
-                        graph.modifyEdges(row, col, isBlock);
+                        model.getGraph().modifyEdges(row, col, isBlock);
                         //System.out.println(row + ", " + col);
                     }
                 }, row, col);
@@ -43,10 +43,10 @@ public class Controller {
                         try {
                             switch (algo) {
                                 case "DFS":
-                                    graph.dfs();
+                                    model.dfs();
                                     break;
                                 case "BFS":
-                                    graph.bfs();
+                                    model.bfs();
                                     break;
                             }
                         } catch (InterruptedException e1) {
