@@ -2,6 +2,7 @@ public class GraphGrid {
     private int gridN;
     private int nodes;
     private int[][] adjMatrix;
+    private boolean[][] blocks;
     private int startCell;
     private int destinationCell; 
 
@@ -9,6 +10,7 @@ public class GraphGrid {
         this.gridN = gridN;
         nodes = gridN * gridN;
         adjMatrix  = new int[nodes][nodes];
+        blocks = new boolean[gridN][gridN];
 
         startCell = gridN * ((int) Math.ceil(gridN/2));
         destinationCell = (gridN * ((int) Math.ceil(gridN/2))) + (gridN - 1);
@@ -54,33 +56,56 @@ public class GraphGrid {
         int matrixValue = 1;
         if(removeEdges){
             matrixValue = 0;
+            addBlock(i, j);
+        } else {
+            removeBlock(i, j);
         }
 
         //check if there is a cell above
         if(i > 0){
-            adjMatrix[(gridN*i)+ j][((gridN*i)+ j) - gridN] = matrixValue;
-            adjMatrix[((gridN*i)+ j) - gridN][(gridN*i)+ j] = matrixValue;
+            if(!(!removeEdges && isBlock(i-1, j))){
+                adjMatrix[(gridN*i)+ j][((gridN*i)+ j) - gridN] = matrixValue;
+                adjMatrix[((gridN*i)+ j) - gridN][(gridN*i)+ j] = matrixValue;
+            }
         }
 
         //check if there is a cell to the right
         if(j < gridN-1){
-            adjMatrix[(gridN*i)+ j][((gridN*i)+ j) + 1] = matrixValue;
-            adjMatrix[((gridN*i)+ j) + 1][(gridN*i)+ j] = matrixValue;
+            if(!(!removeEdges && isBlock(i, j+1))){
+                adjMatrix[(gridN*i)+ j][((gridN*i)+ j) + 1] = matrixValue;
+                adjMatrix[((gridN*i)+ j) + 1][(gridN*i)+ j] = matrixValue;
+            }
         }
 
         //check if there is a cell below
         if(i < gridN-1){
-            adjMatrix[(gridN*i)+ j][((gridN*i)+ j) + gridN] = matrixValue;
-            adjMatrix[((gridN*i)+ j) + gridN][(gridN*i)+ j] = matrixValue;
+            if(!(!removeEdges && isBlock(i+1, j))){
+                adjMatrix[(gridN*i)+ j][((gridN*i)+ j) + gridN] = matrixValue;
+                adjMatrix[((gridN*i)+ j) + gridN][(gridN*i)+ j] = matrixValue;
+            }
         }
 
         //check if there is a cell to the left
         if(j > 0){
-            adjMatrix[(gridN*i)+ j][((gridN*i)+ j) - 1] = matrixValue;
-            adjMatrix[((gridN*i)+ j) - 1][(gridN*i)+ j] = matrixValue;
+            if(!(!removeEdges && isBlock(i, j-1))){
+                adjMatrix[(gridN*i)+ j][((gridN*i)+ j) - 1] = matrixValue;
+                adjMatrix[((gridN*i)+ j) - 1][(gridN*i)+ j] = matrixValue;
+            }
         }
 
         //printAdjMatrix();
+    }
+
+    private void addBlock(int i, int j){
+        blocks[i][j] = true;
+    }
+
+    private void removeBlock(int i, int j){
+        blocks[i][j] = false;
+    }
+
+    private boolean isBlock(int i, int j){
+        return blocks[i][j];
     }
 
     public int getGridN(){

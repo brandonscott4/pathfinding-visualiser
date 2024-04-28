@@ -91,8 +91,6 @@ public class GridGUI {
     }
 
     private void setVisitedCell(int i, int j){
-        //a lot of trues being printed here... seems to be an issue
-        //System.out.println(cellArray[i][j].getBackground() == Color.RED);
         cellArray[i][j].setBackground(Color.RED);
     }
 
