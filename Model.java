@@ -1,5 +1,7 @@
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.PriorityQueue;
 import java.util.Stack;
 import java.util.Queue;
 
@@ -142,6 +144,71 @@ public class Model {
 
         System.out.println("Not found");
         return false;
+    }
+
+    public boolean dijkstras() throws InterruptedException{
+        final int DISTANCE = 1;
+        Stack<Integer> validPath = new Stack<>();
+        HashMap<Integer, Integer> parentMap = new HashMap<>(); 
+
+        boolean[] explored = new boolean[graph.getNodes()];
+        HashMap<Integer, Integer> distances = new HashMap<>();
+        PriorityQueue<int[]> pq = new PriorityQueue<int[]>(Comparator.comparingInt(a -> a[1]));
+
+        //set all distances to infinity (in our case maximum integer value)
+        for(int i=0; i<graph.getNodes(); i++){
+            distances.put(i, Integer.MAX_VALUE);
+        }
+
+        //set start cell cost as 0
+        distances.put(graph.getStartCell(), 0);
+
+        //add the start cell and its cost to the priority queue
+        pq.add(new int[]{graph.getStartCell(), 0});
+
+        //loop -> explore each unexplored node with shortest path from origin
+            //update costs and mark node as explored
+        while(!pq.isEmpty()){
+            int node = pq.poll()[0];
+
+            //check for destination cell and handle visualisation
+            if(node == graph.getDestinationCell()){
+                Integer curr = node;
+                System.out.println("Reached destination");
+                while(curr != null){
+                    validPath.push(curr);
+                    curr = parentMap.get(curr);
+                }
+                notifyObserver();
+                notifyObserver(validPath, graph.getGridN());
+                return true;
+            }
+
+            if(node != graph.getStartCell() && node != graph.getDestinationCell()){
+                notifyObserver(node);
+                Thread.sleep(50);
+            }
+
+
+            if(explored[node]){
+                continue;
+            }
+
+            explored[node] = true;
+
+            for(int i=0; i<graph.getNodes(); i++){
+                if(explored[i] == false && graph.getAdjacencyMatrix()[node][i] == 1){
+                    if(distances.get(node) + DISTANCE < distances.get(i)){
+                        distances.put(i, distances.get(node) + DISTANCE);
+                        parentMap.put(i, node);
+                        pq.add(new int[]{i, distances.get(i)});
+                    }
+                }
+            }
+        }
+
+        return false;
+
     }
 
 }

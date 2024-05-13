@@ -42,7 +42,7 @@ public class GridGUI {
         controlPanel = new JPanel();
         controlPanel.setLayout(new BoxLayout(controlPanel, BoxLayout.Y_AXIS));
         start = new JButton("Start");
-        selectAlgo = new JComboBox<>(new String[] {"BFS" ,"DFS"});
+        selectAlgo = new JComboBox<>(new String[] {"BFS" ,"DFS", "Dijkstra's"});
         selectAlgo.setMaximumSize(new Dimension(150, 30));
 
         start.setAlignmentX(Component.LEFT_ALIGNMENT);

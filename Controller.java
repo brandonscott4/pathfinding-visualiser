@@ -32,7 +32,6 @@ public class Controller {
 
         this.gui.addStartActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                //disable grid?
                 gui.setGUIEnabled(false);
                 gui.clearGrid();
 
@@ -48,12 +47,14 @@ public class Controller {
                                 case "BFS":
                                     model.bfs();
                                     break;
+                                case "Dijkstra's":
+                                    model.dijkstras();
+                                    break;
                             }
                         } catch (InterruptedException e1) {
                             // TODO Auto-generated catch block
                             e1.printStackTrace();
                         } finally {
-                            //enable grid?
                             gui.setGUIEnabled(true);
                         }
                     }
