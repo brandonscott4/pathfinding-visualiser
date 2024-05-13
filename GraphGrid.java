@@ -120,6 +120,10 @@ public class GraphGrid {
         return adjMatrix;
     }
 
+    public boolean isConnected(int cell1, int cell2){
+        return adjMatrix[cell1][cell2] == 1;
+    }
+
     public int getStartCell(){
         return startCell;
     }

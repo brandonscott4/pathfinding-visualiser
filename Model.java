@@ -52,7 +52,7 @@ public class Model {
         visited[currentCell] = true;
 
         for(int i=0; i<graph.getNodes(); i++){
-            if(visited[i] == false && graph.getAdjacencyMatrix()[currentCell][i] == 1){
+            if(visited[i] == false && graph.isConnected(currentCell, i)){
                 stack.push(i);
                 parentMap.put(i, currentCell);
             }
@@ -77,7 +77,7 @@ public class Model {
             notifyObserver(currentCell);
 
             for(int i=0; i<graph.getNodes(); i++){
-                if(visited[i] == false && graph.getAdjacencyMatrix()[currentCell][i] == 1){
+                if(visited[i] == false && graph.isConnected(currentCell, i)){
                     stack.push(i);
                     parentMap.put(i, currentCell);
                 }
@@ -103,7 +103,7 @@ public class Model {
 
         //visit all of the start nodes adjacent nodes
         for(int i=0; i<graph.getNodes(); i++){
-            if(visited[i] == false && graph.getAdjacencyMatrix()[currentCell][i] == 1){
+            if(visited[i] == false && graph.isConnected(currentCell, i)){
                 queue.add(i);
                 parentMap.put(i, currentCell);
                 visited[i] = true;
@@ -133,7 +133,7 @@ public class Model {
 
             //explore the current cells neighbours
             for(int i=0; i<graph.getNodes(); i++){
-                if(visited[i] == false && graph.getAdjacencyMatrix()[currentCell][i] == 1){
+                if(visited[i] == false && graph.isConnected(currentCell, i)){
                     visited[i] = true;
                     queue.add(i);
                     parentMap.put(i, currentCell);
@@ -197,7 +197,7 @@ public class Model {
             explored[node] = true;
 
             for(int i=0; i<graph.getNodes(); i++){
-                if(explored[i] == false && graph.getAdjacencyMatrix()[node][i] == 1){
+                if(explored[i] == false && graph.isConnected(node, i)){
                     if(distances.get(node) + DISTANCE < distances.get(i)){
                         distances.put(i, distances.get(node) + DISTANCE);
                         parentMap.put(i, node);
