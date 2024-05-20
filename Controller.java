@@ -50,6 +50,9 @@ public class Controller {
                                 case "Dijkstra's":
                                     model.dijkstras();
                                     break;
+                                case "A*":
+                                    model.astar();
+                                    break;
                             }
                         } catch (InterruptedException e1) {
                             // TODO Auto-generated catch block

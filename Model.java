@@ -211,4 +211,90 @@ public class Model {
 
     }
 
+    //NOTE: maybe make classes for a Node (node number, cost, combined cost) to improve readability
+    //a star using manhattan distance
+    public boolean astar() throws InterruptedException {
+        final int DISTANCE = 1;
+        final int DESTINATION = graph.getDestinationCell();
+
+        Stack<Integer> validPath = new Stack<>();
+        HashMap<Integer, Integer> parentMap = new HashMap<>();
+
+        boolean[] explored = new boolean[graph.getNodes()];
+        HashMap<Integer, Integer[]> distances = new HashMap<>();
+        //NOTE: may not need actual cost?
+        PriorityQueue<int[]> pq = new PriorityQueue<int[]>(Comparator.comparingInt(a -> a[2]));
+
+        //set all distances to infinity (in our case maximum integer value)
+        for(int i=0; i<graph.getNodes(); i++){
+            distances.put(i, new Integer[]{Integer.MAX_VALUE, Integer.MAX_VALUE});
+        }
+
+        //calculate manhattan distance from start to destination
+        Integer manhattanDistance = calcManhattanDistance(graph.getStartCell(), DESTINATION);
+
+        //set start cell cost as 0
+        distances.put(graph.getStartCell(), new Integer[]{0, manhattanDistance});
+
+        //add the start cell and its cost to the priority queue
+        pq.add(new int[]{graph.getStartCell(), 0, manhattanDistance});
+
+        //loop -> explore each unexplored node with shortest combined cost
+            //update costs and mark node as explored
+            while(!pq.isEmpty()){
+                int[] node = pq.poll();
+                int nodeNum = node[0];
+    
+                //check for destination cell and handle visualisation
+                //NOTE: could make into function since used in each algorithm
+                if(nodeNum == graph.getDestinationCell()){
+                    Integer curr = nodeNum;
+                    System.out.println("Reached destination");
+                    while(curr != null){
+                        validPath.push(curr);
+                        curr = parentMap.get(curr);
+                    }
+                    notifyObserver();
+                    notifyObserver(validPath, graph.getGridN());
+                    return true;
+                }
+    
+                if(nodeNum != graph.getStartCell() && nodeNum != graph.getDestinationCell()){
+                    notifyObserver(nodeNum);
+                    Thread.sleep(50);
+                }
+    
+                if(explored[nodeNum]){
+                    continue;
+                }
+    
+                explored[nodeNum] = true;
+    
+                for(int i=0; i<graph.getNodes(); i++){
+                    if(explored[i] == false && graph.isConnected(nodeNum, i)){
+                        //calculate combined cost for neighbouring nodes
+                        int actualCost = distances.get(nodeNum)[0] + DISTANCE;
+                        int estimatedCost = calcManhattanDistance(i, DESTINATION);
+                        int combinedCost = actualCost + estimatedCost;
+                        
+                        if(combinedCost < distances.get(i)[1]){
+                            distances.put(i, new Integer[]{actualCost, combinedCost});
+                            parentMap.put(i, nodeNum);
+                            pq.add(new int[]{i, actualCost, combinedCost});
+                        }
+                    }
+                }
+            }
+
+        return false;
+
+    }
+
+    private int calcManhattanDistance(int node, int destination){
+        int gridN = graph.getGridN();
+
+        //absolute of (x1 - x2) plus absolute of (y1 - y2)
+        return Math.abs((node / gridN) - (destination / gridN)) + Math.abs((node % gridN) - (destination % gridN));
+    }
+
 }
